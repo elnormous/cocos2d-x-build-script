@@ -8,7 +8,7 @@ Script that builds cocos2d-x libs on Mac using Xcode
 3. Run the build.sh. You can run it without arguments to build all configurations (release, debug) for all platforms (mac, iphone). Or you can specify which platforms and which configurations to build:
 
 ```
-./build.sh -p mac iphone -c release -d output
+./build.sh -p mac iphone -c release -d output -j 4
 ```
 
 ## Options
@@ -17,3 +17,4 @@ Script that builds cocos2d-x libs on Mac using Xcode
 * **-d** – Build directory
 * **-h** – Display available options
 * **-p** – Build platforms: mac, iphone, appletv
+* **-j** – Count of parallel build jobs
