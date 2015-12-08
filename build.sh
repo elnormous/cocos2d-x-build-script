@@ -1,6 +1,10 @@
 COCOS2DX_BUILD_MAC=true
+
 COCOS2DX_BUILD_IPHONE=true
+COCOS2DX_BUILD_IPHONESIMULATOR=true
+
 COCOS2DX_BUILD_APPLETV=false # don't build tvOS by default, because it is not in the cocos2d-x repository
+COCOS2DX_BUILD_APPLETVSIMULATOR=false
 
 COCOS2DX_RELEASE=true
 COCOS2DX_DEBUG=true
@@ -16,7 +20,7 @@ function printHelp {
 	echo "	-c <configurations>		Build configuration: release, debug"
 	echo "	-d <directory>			Build directory"
 	echo "	-h				Display available options"
-	echo "	-p <platforms>			Build platforms: mac, iphone, appletv"
+	echo "	-p <platforms>			Build platforms: mac, iphone, iphonesimulator, appletv, appletvsimulator"
 	exit
 }
 
@@ -55,8 +59,14 @@ then
 							"iphone")
 								COCOS2DX_BUILD_IPHONE=true
 								;;
+							"iphonesimulator")
+								COCOS2DX_BUILD_IPHONESIMULATOR=true
+								;;
 							"appletv")
 								COCOS2DX_BUILD_APPLETV=true
+								;;
+							"appletvsimulator")
+								COCOS2DX_BUILD_APPLETVSIMULATOR=true
 								;;
 							*)
 								echo "Invalid argument \"$arg\""
@@ -118,6 +128,19 @@ then
 	fi
 fi
 
+if $COCOS2DX_BUILD_IPHONESIMULATOR
+then
+	if $COCOS2DX_RELEASE
+	then
+		xcodebuild -project cocos2d_libs.xcodeproj -scheme "libcocos2d iOS" -configuration Release -jobs 4 CONFIGURATION_BUILD_DIR="$BUILD_DIR/Release-iphonesimulator" -sdk iphonesimulator
+	fi
+
+	if $COCOS2DX_DEBUG
+	then
+		xcodebuild -project cocos2d_libs.xcodeproj -scheme "libcocos2d iOS" -configuration Debug -jobs 4 CONFIGURATION_BUILD_DIR="$BUILD_DIR/Debug-iphonesimulator" -sdk iphonesimulator
+	fi
+fi
+
 if $COCOS2DX_BUILD_APPLETV
 then
 	if $COCOS2DX_RELEASE
@@ -128,5 +151,18 @@ then
 	if $COCOS2DX_DEBUG
 	then
 		xcodebuild -project cocos2d_libs.xcodeproj -scheme "libcocos2d tvOS" -configuration Debug -jobs 4 CONFIGURATION_BUILD_DIR="$BUILD_DIR/Debug-appletvos" -sdk appletvos
+	fi
+fi
+
+if $COCOS2DX_BUILD_APPLETVSIMULATOR
+then
+	if $COCOS2DX_RELEASE
+	then
+		xcodebuild -project cocos2d_libs.xcodeproj -scheme "libcocos2d tvOS" -configuration Release -jobs 4 CONFIGURATION_BUILD_DIR="$BUILD_DIR/Release-appletvsimulator" -sdk appletvsimulator
+	fi
+
+	if $COCOS2DX_DEBUG
+	then
+		xcodebuild -project cocos2d_libs.xcodeproj -scheme "libcocos2d tvOS" -configuration Debug -jobs 4 CONFIGURATION_BUILD_DIR="$BUILD_DIR/Debug-appletvsimulator" -sdk appletvsimulator
 	fi
 fi
